@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>French Holger Bot</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#16192b;--muted:#5d6279;--line:#e3e6f0;--accent:#5865f2;--accent-h:#4752c4;--soft:#eef0fe;--hdr:rgba(255,255,255,.88);
+--green:#1f9d6b;--blue:#2b7de0;--orange:#d9822b;--red:#d64550;--purple:#7c5cd6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{--bg:#0f1220;--card:#181c2e;--text:#eceefa;--muted:#9ba1bf;--line:#272c45;--accent:#7983f5;--accent-h:#929aff;--soft:#222744;--hdr:rgba(15,18,32,.88);
+--green:#3ccf94;--blue:#5aa2f5;--orange:#f0a050;--red:#f2707a;--purple:#a58cf0}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;transition:background .2s,color .2s}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--hdr);backdrop-filter:blur(10px);z-index:20}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--hdr);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{max-width:920px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:18px}
+.brand{font-weight:700;font-size:1.05rem;margin-right:auto;color:var(--text);text-decoration:none}
+.links{display:flex;gap:18px}
+.links a{color:var(--muted);text-decoration:none;font-size:.92rem;font-weight:500}
+.links a:hover{color:var(--accent)}
+@media(max-width:720px){.links{display:none}}
+.btn{display:inline-block;padding:10px 20px;border-radius:8px;font:600 .92rem system-ui,sans-serif;text-decoration:none;border:1px solid transparent;cursor:pointer}
+.bp{background:var(--accent);color:#fff}.bp:hover{background:var(--accent-h)}
+.bs{background:var(--card);color:var(--text);border-color:var(--line)}.bs:hover{border-color:var(--accent)}
+.tg{padding:8px 12px;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;font:600 .85rem system-ui,sans-serif;cursor:pointer}
+.tg:hover{border-color:var(--accent)}
+.hero{padding:72px 0 56px;text-align:center}
+.hero h1{font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.1;margin:0 0 14px;letter-spacing:-.02em}
+.hero h1 span{background:linear-gradient(90deg,#5865f2,#a66bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:560px;margin:0 auto 28px;color:var(--muted);font-size:1.1rem}
+.hero .btn{margin:4px;padding:13px 26px}
+section{margin-bottom:56px}
+h2{font-size:1.6rem;margin:0 0 6px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 22px}
+code{background:var(--soft);padding:2px 7px;border-radius:6px;font-size:.9em}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.feat div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;border-top:3px solid var(--accent)}
+.feat b{display:block;margin-bottom:4px}.feat span{color:var(--muted);font-size:.93rem;line-height:1.5;display:block}
+.feat div:nth-child(2){border-top-color:var(--purple)}.feat div:nth-child(3){border-top-color:var(--orange)}.feat div:nth-child(4){border-top-color:var(--green)}
+.prev{display:grid;grid-template-columns:190px 1fr;gap:16px}
+@media(max-width:680px){.prev{grid-template-columns:1fr}}
+.chips{display:flex;flex-direction:column;gap:6px}
+@media(max-width:680px){.chips{flex-direction:row;flex-wrap:wrap}}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:9px 14px;font:600 .9rem ui-monospace,Menlo,Consolas,monospace;cursor:pointer;text-align:left}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.dc{background:#313338;border-radius:12px;padding:18px;color:#dbdee1;font-size:.93rem;min-height:250px;font-family:"gg sans","Segoe UI",system-ui,sans-serif}
+.msg{display:flex;gap:12px;margin-bottom:16px}
+.av{flex:0 0 38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+.nm{font-weight:600;color:#fff}.nm em{font-style:normal;font-size:.62rem;background:#5865f2;border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.sl{color:#c9cdfb;background:rgba(88,101,242,.3);padding:1px 6px;border-radius:4px}
+.emb{background:#2b2d31;border-left:4px solid #5865f2;border-radius:6px;padding:12px 14px;margin-top:6px;max-width:440px;animation:in .25s}
+@keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.emb h4{margin:0 0 6px;color:#fff;font-size:1rem}.emb p{margin:0;line-height:1.5;white-space:pre-line}
+.cat{margin-top:26px}
+.cat h3{margin:0 0 4px;font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;color:var(--accent)}
+.cmd{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);align-items:baseline;flex-wrap:wrap}
+.cmd:last-child{border-bottom:0}
+.cmd code{font-weight:700;color:var(--text);flex:0 0 auto}
+.cmd span{color:var(--muted);flex:1 1 240px}
+.tag{font-size:.72rem;font-style:normal;font-weight:600;border-radius:6px;padding:2px 9px;white-space:nowrap;border:1px solid currentColor}
+.t-Everyone{color:var(--green)}.t-Moderator{color:var(--blue)}.t-Higher{color:var(--orange)}.t-Admin{color:var(--red)}.t-Staff{color:var(--purple)}
+input[type=search]{width:100%;padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-size:1rem}
+input[type=search]:focus{outline:0;border-color:var(--accent)}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--card);overflow:hidden}
+summary{cursor:pointer;font-weight:600;padding:14px 18px}
+details ol{margin:0;padding:0 18px 8px 42px}details li{margin-bottom:10px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;counter-reset:s}
+.step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;counter-increment:s}
+.step::before{content:counter(s);display:flex;width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--accent);font-weight:700;font-size:.85rem;align-items:center;justify-content:center;margin-bottom:10px}
+.step b{display:block;margin-bottom:4px}.step span{color:var(--muted);font-size:.9rem;line-height:1.45;display:block}
+.pun .step{border-left:3px solid var(--orange)}.pun .step:nth-child(3){border-left-color:#e0603a}.pun .step:nth-child(4){border-left-color:var(--red)}.pun .step:nth-child(1){border-left-color:#d9b02b}
+.note{font-size:.88rem;color:var(--muted);margin-top:16px}
+ol.terms li{margin-bottom:12px}ol.terms li::marker{font-weight:700;color:var(--accent)}
+.cta{text-align:center;background:linear-gradient(135deg,#5865f2,#7c5cd6);border:0;color:#fff;border-radius:16px;padding:44px 24px}
+.cta .sub{color:#e6e8ff}.cta .btn{margin:4px}
+.cta .bw{background:#fff;color:#4752c4}.cta .bo{background:transparent;color:#fff;border-color:rgba(255,255,255,.7)}
+footer{text-align:center;color:var(--muted);font-size:.88rem;padding:0 0 48px}
+footer a{color:var(--accent)}
+.hide{display:none}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <a class="brand" href="#top">French Holger Bot</a>
+  <nav class="links"><a href="#preview">Preview</a><a href="#commands">Commands</a><a href="#rules">Rules</a><a href="#staff">Staff</a><a href="#terms">Terms</a></nav>
+  <button class="tg" id="tg" type="button" aria-label="Switch theme">Dark mode</button>
+  <a class="btn bp" href="https://discord.com/oauth2/authorize?client_id=1514038562964901928" target="_blank" rel="noopener">Add to Discord</a>
+</div></header>
+
+<div class="wrap" id="top">
+<div class="hero">
+  <h1>Moderation and community tools for <span>your Discord server</span></h1>
+  <p>Moderation, staff applications and a FSP &amp; Baguette economy in one bot. Available in English, Français, Español and Deutsch.</p>
+  <a class="btn bp" href="https://discord.com/oauth2/authorize?client_id=1514038562964901928" target="_blank" rel="noopener">Add to Discord</a>
+  <a class="btn bs" href="https://discord.gg/GXAYy5hpFm" target="_blank" rel="noopener">Support server</a>
+</div>
+
+<section>
+  <div class="feat">
+    <div><b>Moderation</b><span>Warn, timeout, kick, ban, purge, lock and slowmode, with a full action history.</span></div>
+    <div><b>Economy</b><span>Earn FSP, buy Baguettes, trade with members and climb the leaderboard.</span></div>
+    <div><b>Staff applications</b><span>A five-stage review pipeline with an automatic background check.</span></div>
+    <div><b>Shifts and quotas</b><span>On-duty roles, moderator stats and monthly action quotas.</span></div>
+  </div>
+</section>
+
+<section id="preview">
+  <h2>Preview</h2>
+  <p class="sub">Choose a command to see how the bot answers in Discord.</p>
+  <div class="prev"><div class="chips" id="chips"></div><div class="dc" id="dc"></div></div>
+</section>
+
+<section id="commands">
+  <h2>Commands</h2>
+  <p class="sub">Most commands work as slash commands (<code>/</code>) and prefix commands (<code>?</code>). Staff commands require the matching permission tier, set by admins with <code>/setup roles</code>.</p>
+  <div class="box"><input type="search" id="q" placeholder="Search commands" aria-label="Search commands"><div id="list"></div></div>
+</section>
+
+<section id="rules">
+  <h2>Support server rules</h2>
+  <p class="sub">The rules of our community server. Staff have the final say in decisions.</p>
+  <details open><summary>General conduct</summary><ol>
+    <li value="1">Spamming, flooding, mass reacting and chaining messages is not allowed.</li>
+    <li value="2">Racism, sexism, slurs and similar content is not allowed.</li>
+    <li value="3">Harassment, threats, bullying, verbal abuse and similar content is not allowed.</li>
+    <li value="4">Disruptive content such as crash gifs/videos, being toxic or causing drama is not allowed.</li>
+    <li value="6">Pinging anyone in a message or reply without a valid reason is not allowed, unless you have the permitted role.</li>
+    <li value="7">The server language is English, so you must speak English.</li>
+    <li value="9">Encouraging, attempting, aiding in, or falsely accusing others of conduct that breaks the rules or Discord’s ToS is not allowed.</li>
+    <li value="11">Joking about being underage, or purposely misleading others to believe you are underage, is prohibited.</li>
+    <li value="12">Advertising is forbidden unless it happens naturally in conversation or a Moderator or above gives permission.</li>
+    <li value="13">Alternative accounts are not allowed. If we find multiple accounts, the alt is permanently banned and the main account is punished.</li>
+  </ol></details>
+  <details><summary>Behaviour rules</summary><ol>
+    <li value="14">Abusing permissions, bugs or glitches is not allowed.</li>
+    <li value="15">Encouraging, attempting, aiding in, or falsely accusing others of conduct that breaks the rules, Discord ToS or Roblox ToS is prohibited.</li>
+    <li value="16">Evading moderation with alts, glitches or other unintended ways is not allowed.</li>
+    <li value="17">Participation in illegal behaviour and other unethical conduct is prohibited.</li>
+    <li value="18">Impersonating another person is prohibited unless it is an obvious parody.</li>
+    <li value="19">Complaining about an in-game punishment is not allowed. If you were punished unfairly, create a ticket.</li>
+    <li value="20">Mini-modding is not allowed. Don’t report every small infraction by pinging staff or opening a ticket.</li>
+    <li value="21">Aim to be respectful and civil towards other members.</li>
+    <li value="22">Staff have the final say. To appeal a punishment, contact a high rank through the ticket channel.</li>
+    <li value="23">The rules don’t apply to administrators.</li>
+  </ol></details>
+  <p class="note">Original writing by Airoslav (@airoslav.). Updated by Izeriko (@izeriko).</p>
+</section>
+
+<section id="staff">
+  <h2>Staff applications</h2>
+  <p class="sub">Every application goes through five stages. The bot sends you a DM when your application is accepted or denied.</p>
+  <div class="steps">
+    <div class="step"><b>Pending staff review</b><span>Waits in a channel until a staff member starts handling it.</span></div>
+    <div class="step"><b>Initial background check</b><span>An automatic check by the bot. It may take a while.</span></div>
+    <div class="step"><b>Being considered</b><span>Your application was good enough to move to the next step.</span></div>
+    <div class="step"><b>Manual background check</b><span>An in-depth manual check, then accepted or sent to staff opinions.</span></div>
+    <div class="step"><b>Staff opinions</b><span>The staff team discusses your application.</span></div>
+  </div>
+
+  <h2 style="margin-top:44px">Staff punishment system</h2>
+  <p class="sub">Staff who break the server rules or staff rules are punished from step 1 to 4, unless a case calls for something else. Higher ranks use <code>/punishstaff</code>, and records can be viewed with <code>/punishments</code>.</p>
+  <div class="steps pun">
+    <div class="step"><b>Verbal Warn</b><span>A text warning from a higher rank.</span></div>
+    <div class="step"><b>Written Warn</b><span>Saved by the bot, and the member is notified by DM.</span></div>
+    <div class="step"><b>Status removal and demotion</b><span>Staff roles removed for a week, then demotion. A second chance.</span></div>
+    <div class="step"><b>Being fired</b><span>Removed from the staff team. The member is notified by DM.</span></div>
+  </div>
+  <p style="margin-top:18px">Two Verbal Warns merge into one Written Warn. Two Written Warns can lead to status removal or being fired, which most often follows a status removal.</p>
+  <p>Records are removed automatically after 2 months for warns (Verbal Warns alone do not count toward promotions), 6 months for status removal and demotion, and 1 year 6 months for being fired, after which the member can reapply.</p>
+  <p class="note">Punishment system by Izeriko (@izeriko).</p>
+</section>
+
+<section id="terms">
+  <h2>Terms of Use</h2>
+  <p class="sub">Last updated: October 22, 2026</p>
+  <div class="box"><ol class="terms">
+    <li><strong>Acceptance.</strong> By adding the bot or using its commands, you agree to these terms and to <a href="https://discord.com/terms" target="_blank" rel="noopener" style="color:var(--accent)">Discord’s Terms of Service</a>. If you don’t agree, remove the bot and stop using it.</li>
+    <li><strong>Who may use it.</strong> You must meet Discord’s minimum age requirement. Server owners and admins are responsible for how the bot is configured in their server.</li>
+    <li><strong>Acceptable use.</strong> Don’t harass or discriminate against anyone, break Discord’s rules or the law, spam, or abuse moderation tools. Don’t exploit bugs, duplicate currency or attack the bot’s hosting.</li>
+    <li><strong>Moderation.</strong> Warnings, timeouts, kicks, bans and purges are carried out by a server’s staff, who are solely responsible for their decisions. Automatic punishments follow your server’s settings.</li>
+    <li><strong>Staff applications.</strong> When enabled, applications are posted to private review channels. An automatic background check may scan message history the bot can access and compare it with a word list set by the server’s admins. Decisions, including blacklisting, are made by the server’s review team.</li>
+    <li><strong>Virtual economy.</strong> FSP and Baguettes have no real-world value and cannot be bought, sold or exchanged for money. Balances may be changed or reset by staff or by us, for example after abuse, bugs or data loss. Payments between members have a 10% tax; trades do not.</li>
+    <li><strong>Availability.</strong> The bot is provided “as is” without warranty. It may go offline, change or lose data at any time.</li>
+    <li><strong>Liability.</strong> To the extent permitted by law, the operators are not liable for loss or damage from using the bot, including loss of data or virtual items.</li>
+    <li><strong>Suspension.</strong> We may restrict or remove the bot from any user or server that breaks these terms.</li>
+    <li><strong>Changes.</strong> We may update these terms. Continuing to use the bot means you accept them.</li>
+  </ol>
+  <h3 style="margin:24px 0 8px">Data the bot stores</h3>
+  <p>Server configuration (role and channel IDs, language, shop and log settings), moderation records, FSP and Baguette balances, and application answers, decisions and blacklist. We don’t sell or share this data. Messages are read only to run commands, enabled features such as FSP phrase rewards, and the application background check. To ask about or delete your data, contact us in the support server.</p>
+  <p class="note" style="margin-bottom:0">This is a general summary for a Discord bot and not legal advice.</p></div>
+</section>
+
+<section class="cta">
+  <h2>Ready to get started?</h2>
+  <p class="sub">Add the bot to your server, or join our community for help and updates.</p>
+  <a class="btn bw" href="https://discord.com/oauth2/authorize?client_id=1514038562964901928" target="_blank" rel="noopener">Add to Discord</a>
+  <a class="btn bo" href="https://discord.gg/GXAYy5hpFm" target="_blank" rel="noopener">Join the support server</a>
+</section>
+<footer>© 2026 French Holger Bot. Not affiliated with or endorsed by Discord Inc. <a href="#top">Back to top</a></footer>
+</div>
+
+<script>
+var C=[
+["Moderation",[
+["/warn","Issue a warning to a member","Moderator"],
+["/warns","View warnings for a member","Moderator"],
+["/clearwarns","Remove specific warnings from a member","Moderator"],
+["/clearactions","Remove moderation actions from a member’s history","Higher Rank"],
+["/timeout","Timeout a member (e.g. 30m, 6h, 2d; max 28d)","Moderator"],
+["/kick","Kick a member","Moderator"],
+["/ban","Ban a member or user, optionally temporary","Moderator"],
+["/unban","Remove a ban (also ?unban)","Moderator"],
+["/softban","Ban and unban to delete recent messages (also ?softban)","Moderator"]
+]],
+["Channel tools",[
+["/purge","Delete 1–100 messages, optionally from one user","Moderator"],
+["/clean","Delete the bot’s messages in this channel","Moderator"],
+["/lock","Stop @everyone from sending messages in a channel","Moderator"],
+["/unlock","Restore @everyone’s permission to send messages","Moderator"],
+["/slowmode","Set a channel’s slowmode delay (0 disables it)","Moderator"]
+]],
+["Shifts and staff",[
+["/shift","Start or end an on-duty shift","Moderator"],
+["/ms","View moderation stats for a moderator","Moderator"],
+["/msquotaset","Set the monthly moderation action quota","Higher Rank"],
+["/punishstaff","Add or remove a staff punishment","Higher Rank"],
+["/punishments","View staff punishment history","Staff"],
+["/applicationstart","Publish an application and open its next wave","Higher Rank"]
+]],
+["Economy",[
+["/balance","Check your or another member’s balance","Everyone"],
+["/shop","View the French shop","Everyone"],
+["/buy","Buy something from the French shop","Everyone"],
+["/pay","Send FSP to another member (10% tax)","Everyone"],
+["/trade","Propose a direct trade (no tax)","Everyone"],
+["/leaderboard","Top 10 FSP holders","Everyone"],
+["/fsp-config","View the current FSP configuration","Everyone"],
+["/jackpot","Change the FSP phrase jackpot prize","Higher Rank"]
+]],
+["Server setup",[
+["/setup roles","Add or remove a role from a permission tier","Admin"],
+["/setup onduty","Set the on-duty role given during shifts","Admin"],
+["/setup fsp","Enable or disable the FSP economy","Admin"],
+["/setup fsp-channel","Set the FSP phrase rewards channel","Admin"],
+["/setup shop","Configure a shop role tier and price","Admin"],
+["/setup language","Choose the bot language (EN, FR, ES, DE)","Admin"],
+["/setup logs","Set the staff-command and moderation log channels","Admin"],
+["/setup application-channels","Set the five application review channels","Admin"],
+["/setup application-roles","Set required and excluded roles for applying","Admin"],
+["/setup application-words","Set the words used by the background check","Admin"],
+["/setup view","View the current server configuration","Admin"],
+["/help","Show the bot command list","Everyone"]
+]]
+];
+var list=document.getElementById("list");
+C.forEach(function(g){
+  var d=document.createElement("div");d.className="cat";
+  var h="<h3>"+g[0]+"</h3>";
+  g[1].forEach(function(c){h+='<div class="cmd"><code>'+c[0]+'</code><span>'+c[1]+'</span><em class="tag t-'+c[2].split(" ")[0]+'">'+c[2]+'</em></div>';});
+  d.innerHTML=h;list.appendChild(d);
+});
+document.getElementById("q").addEventListener("input",function(e){
+  var v=e.target.value.toLowerCase();
+  document.querySelectorAll(".cat").forEach(function(cat){
+    var any=false;
+    cat.querySelectorAll(".cmd").forEach(function(r){
+      var m=r.textContent.toLowerCase().indexOf(v)>-1;
+      r.classList.toggle("hide",!m);if(m)any=true;
+    });
+    cat.classList.toggle("hide",!any);
+  });
+});
+var P=[
+["/balance","#57f287","Balance","You have 1,250 FSP and 3 Baguettes."],
+["/shop","#fee75c","The French Shop","Tier 1: Croissant Club role: 5,000 FSP + 2 Baguettes\nTier 2: Baguette Baron role: 12,000 FSP + 5 Baguettes\nTier 3: Le Grand Fromage role: 30,000 FSP + 10 Baguettes"],
+["/pay","#57f287","Payment sent","You sent 500 FSP to @Marie. A 10% tax of 50 FSP was applied."],
+["/warn","#fee75c","Member warned","@Louis has been warned. (Action #42)\nReason: Spamming in general chat"],
+["/shift","#5865f2","Shift started","You are now on duty. The on-duty role has been added."],
+["/setup view","#5865f2","Server Configuration","Language: English\nFSP enabled: Yes\nStaff-command logs: #staff-logs\nMonthly mod quota: 15"]
+];
+var ch=document.getElementById("chips"),dc=document.getElementById("dc");
+function show(i){
+  var p=P[i];
+  Array.prototype.forEach.call(ch.children,function(b,j){b.classList.toggle("on",i===j);});
+  dc.innerHTML='<div class="msg"><div class="av" style="background:#5865f2">Y</div><div><div class="nm">You</div>used <span class="sl">'+p[0]+'</span></div></div>'+
+  '<div class="msg"><div class="av" style="background:#e0a82e">F</div><div><div class="nm">French Holger Bot<em>BOT</em></div><div class="emb" style="border-color:'+p[1]+'"><h4>'+p[2]+'</h4><p>'+p[3]+'</p></div></div></div>';
+}
+P.forEach(function(p,i){var b=document.createElement("button");b.className="chip";b.textContent=p[0];b.onclick=function(){show(i)};ch.appendChild(b);});
+show(0);
+var root=document.documentElement,tg=document.getElementById("tg");
+function setTheme(t){root.setAttribute("data-theme",t);tg.textContent=t==="dark"?"Light mode":"Dark mode";try{localStorage.setItem("fhb-theme",t)}catch(e){}}
+var saved="light";try{saved=localStorage.getItem("fhb-theme")||"light"}catch(e){}
+setTheme(saved==="dark"?"dark":"light");
+tg.onclick=function(){setTheme(root.getAttribute("data-theme")==="dark"?"light":"dark")};
+</script>
+</body>
+</html>
